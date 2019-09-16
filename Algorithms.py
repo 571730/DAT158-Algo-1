@@ -88,6 +88,24 @@ def lcs(X, Y, m, n):
         return max(lcs(X, Y, m, n - 1), lcs(X, Y, m - 1, n))
 
 
+def dynLcs(X, Y):
+    m = len(X)
+    n = len(Y)
+
+    L = [[None] * (n + 1) for i in range(m + 1)]
+
+    for i in range(m + 1):
+        for j in range(n + 1):
+            if i == 0 or j == 0:
+                L[i][j] = 0
+            elif X[i - 1] == Y[j - 1]:
+                L[i][j] = L[i - 1][j - 1] + 1
+            else:
+                L[i][j] = max(L[i - 1][j], L[i][j - 1])
+
+    return L[m][n]
+
+
 def main():
     text = "a pattern matching algorithm"
     pattern = "rithm"
@@ -101,6 +119,19 @@ def main():
     Y = "bbabbaaab"
     print(f"LCS in {X} and {Y} is {lcs(X,Y,len(X), len(Y))}")
     print("LCS dynamic version")
+    print(f"LCS from dynamic for {X} and {Y} is {dynLcs(X, Y)}")
+    print("We will now find out when the recursive version starts to get too slow")
+    print("Trying recursive LCS with 15 char strings")
+    X = "abshdtshdjtshdj"
+    Y = "abshdtthdvtsndj"
+    print(f"recursive LCS for {X} and {Y} is {lcs(X, Y, len(X), len(Y))}")
+    print("Trying dynamic LCS with 20 char strings")
+    X = "abshdtshdjtshdjjdkt"
+    Y = "abshdtthdvtsndjtahsk"
+    print(f"dynamic LCS for {X} and {Y} is {dynLcs(X, Y)}")
+    print("Trying recursive LCS with 20 char strings")
+    print("This one will take some time..")
+    print(f"recursive LCS for {X} and {Y} is {lcs(X, Y, len(X), len(Y))}")
 
 
 if __name__ == '__main__':
